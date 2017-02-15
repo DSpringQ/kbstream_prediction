@@ -1,8 +1,10 @@
 #coding=utf-8
 import sys, os
 import json
+import datetime
 
 dataset_path = os.path.join(os.path.abspath('.'), 'data', 'dataset')
+#dataset_path = u'F:\Palace_dsq\天池\dataset'
 shopinfo_path = os.path.join(dataset_path, 'shop_info.txt')
 userpay_path = os.path.join(dataset_path, 'user_pay.txt')
 sta_path = os.path.join(dataset_path, 'pay.json')
@@ -45,6 +47,7 @@ def save_userpay_info():
                 print i, '-->>', total_userpay_num
             now_shop = line.rstrip().split(',')[1]
             now_date = line.rstrip().split(',')[2].split()[0]
+            #now_date = datetime.datetime.strptime(now_date, "%Y-%m-%d")
             if now_date not in dic[now_shop]:
                 dic[now_shop][now_date] = 0
             dic[now_shop][now_date] += 1
@@ -69,13 +72,12 @@ def visualize_dealnumbers_for_one_shop(shop):
     dates = []
     deal_nums = []
     for date, deal_num in sorted_dic_list:
-        dates.append(date)
+        dates.append(datetime.datetime.strptime(date, "%Y-%m-%d"))
         deal_nums.append(deal_num)
     print dates
     print deal_nums
     from matplotlib import pyplot as plt
     from matplotlib.dates import MonthLocator,DateFormatter
-    import datetime
 
     fig, ax = plt.subplots()
     ax.plot_date(dates, deal_nums, '-')
